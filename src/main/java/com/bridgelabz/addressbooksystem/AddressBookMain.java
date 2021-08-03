@@ -1,61 +1,56 @@
-package addressbooksystem;
+package com.bridgelabz.addressbook;
 
-import java.util.LinkedList;
-import java.util.List;
+/**
+ * Address Book Main!
+ *
+ */
 import java.util.Scanner;
+import java.lang.*;
 
-@SuppressWarnings("unused")
 public class AddressBookMain {
     public static void main(String[] args) {
-        LinkedList<Person> addresssBook = new LinkedList<Person>();
-        AddressBook ab = new AddressBook();
-        Person p;
-        @SuppressWarnings("resource")
-		Scanner input = new Scanner(System.in);
-        System.out.println("Welcome to Address Book !");
-        int flag=0;
-        while (flag == 0) {
-            System.out.print("\nEnter Choice" +
-                    "\n1. Add Person" +
-                    "\n2. View Address Book" +
-                    "\n3. Edit Record" +
-                    "\n4. Delete Person" +
-                    "\n5. Exit" +
-                    "\nChoice: ");
-            int choice = input.nextInt();
-            switch (choice){
+        Scanner sc = new Scanner(System.in);
+        AddressBook addressBook = new AddressBook();
+        Map<String, AddressBook> addressBookMap = new HashMap<String,AddressBook>();
+        while (true) {
+            System.out.println("\n--------------------------Welcome to Address Book System--------------------------");
+            System.out.println("1. New Address Book");
+            System.out.println("2. Select Address Book");
+            System.out.println("3. Delete Address Book");
+            System.out.println("4. Exit");
+            System.out.print("Enter Your choice: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
+            switch (choice) {
                 case 1:
-                    p = ab.addPerson();
-                    addresssBook.add(p);
+                    System.out.println("Enter Name of new Address Book: ");
+                    String bookName = sc.next();
+                    sc.nextLine();
+                    addressBookMap.put(bookName, new AddressBook());//adding bookname as a key and vlue is allocating memory for addressbook obj
+                    addressBook.addressBookOptions(addressBookMap.get(bookName));//call addressbookoption method with passing key of hashmap
                     break;
                 case 2:
-                    if(addresssBook.isEmpty()){
-                        System.out.println("Address Book is Empty !!!");
-                    } else {
-                        for (Person person : addresssBook) {
-                            System.out.println(person.toString());
-                        }
+                    System.out.println("List of available Address Book : ");
+                    Set keys = addressBookMap.keySet();//retrived keys from hashmap to show addressbooklist
+                    Iterator i = keys.iterator();
+                    while (i.hasNext()){
+                        System.out.println(i.next());
                     }
+                    System.out.println("Enter Address Book name you want to Open : ");
+                    String name = sc.nextLine();
+                    System.out.println("Current Address Book is : "+name);
+                    addressBook.addressBookOptions(addressBookMap.get(name));//call method with passing address book name
                     break;
                 case 3:
-                    if (addresssBook.isEmpty()){
-                        System.out.println("Address Book Empty !!!");
-                    } else {
-                        addresssBook = ab.editPerson(addresssBook);
-                    }
+                    System.out.println("Enter Address Book name to be delete: ");
+                    name = sc.nextLine();
+                    addressBookMap.remove(name);//delete hashmap using remove fun
                     break;
                 case 4:
-                    if(addresssBook.isEmpty()){
-                        System.out.println("Address Book Empty !!!");
-                    } else {
-                        addresssBook = ab.deletePerson(addresssBook);
-                    }
-                    break;
-                case 5:
-                    flag=1;
-                    break;
+                    sc.close();//for closing the programme
+                    return;
                 default:
-                    System.out.println("Invalid Choice !!!");
+                    System.out.println("You Entered Invalid Choice....!");
                     break;
             }
         }
