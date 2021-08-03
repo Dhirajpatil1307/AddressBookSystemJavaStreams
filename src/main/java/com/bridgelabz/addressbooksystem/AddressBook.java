@@ -1,119 +1,122 @@
-package com.bridgelabz.addressbook;
+package addressbooksystem;
 
+import java.util.LinkedList;
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class AddressBook {
-	public ArrayList<Contacts> contactList = new ArrayList<>();
+    Scanner input = new Scanner(System.in);
 
-	public void addContact(Contacts contact) {
-		contactList.add(contact);
-	}
+    // FUNCTION TO ADD PERSON TO ADDRESS BOOK
+    LinkedList<Person> addPerson(LinkedList<Person> addressBook) {
+        Person p = new Person();
+        System.out.print("Enter First name: ");
+        String fname = input.next();
+        System.out.print("Enter Last name: ");
+        String lname = input.next();
+        if (checkExist(fname,lname,addressBook) == true){
+            System.out.println("Record already exists cant add !!!");
+        } else {
+            System.out.print("Enter Address: ");
+            String address = input.next();
+            System.out.print("Enter City: ");
+            String city = input.next();
+            System.out.print("Enter state: ");
+            String state = input.next();
+            System.out.print("Enter Zip: ");
+            int zip = input.nextInt();
+            System.out.print("Enter phone number: ");
+            String phoneNum = input.next();
+            p.setPerson(fname, lname, address, city, state, zip, phoneNum);
+            addressBook.add(p);
+        }
+        return addressBook;
+    }
 
-	// method for search contact by name
-	public int searchByName(String name) {
-		for (Contacts contact : contactList)
-			if (contact.getfName().equalsIgnoreCase(name))
-				return contactList.indexOf(contact);
-		return -1;
-	}
-
-	// method for edit contact
-	public boolean editContact(String name, Contacts edit) {
-		int index = searchByName(name);
-		if (index == -1)
-			return false;
-		contactList.set(index, edit);
-		return true;
-	}
-
-	// method for delete contact
-	public boolean deleteContact(String name) {
-		int index = searchByName(name);
-		if (index == -1)
-			return false;
-		contactList.remove(index);
-		return true;
-	}
-
-	// for showing output details
-	@Override
-	public String toString() {
-		if (contactList.isEmpty())
-			return "No contacts found!";
-		String result = new String();
-		for (int i = 0; i < contactList.size(); i++) {
-			result += " " + contactList.get(i);
-		}
-		return result;
-	}
-
-	// method for adding details
-	public static Contacts readContact() {
-		Scanner sc = new Scanner(System.in);
-		System.out.print("Enter First Name: ");
-		String firstName = sc.nextLine();
-		System.out.print("Enter Last Name: ");
-		String lastName = sc.nextLine();
-		System.out.print("Enter Address: ");
-		String address = sc.nextLine();
-		System.out.print("Enter City: ");
-		String city = sc.nextLine();
-		System.out.print("Enter State: ");
-		String state = sc.nextLine();
-		System.out.print("Enter Zip Code: ");
-		Long zip = sc.nextLong();
-		sc.nextLine();
-		System.out.print("Enter Phone Number: ");
-		Long phoneNum = sc.nextLong();
-		sc.nextLine();
-		System.out.print("Enter Email ID: ");
-		String email = sc.nextLine();
-		return new Contacts(firstName, lastName, address, city, state, zip, phoneNum, email);
-	}
-
-	// method for show option for contacts
-	public static void addressBookOptions(AddressBook addressBook) {
-        Scanner sc = new Scanner(System.in);
-        while (true) {
-            System.out.println("\n-------------------------- Address Book Contact Option --------------------------");
-            System.out.println("1. Add contact details");
-            System.out.println("2. Edit contact details");
-            System.out.println("3. Delete contact details");
-            System.out.println("4. Show contacts details");
-            System.out.println("5. Back to main menu");
-            System.out.print("Enter Your choice: ");
-            int choice = sc.nextInt();
-            sc.nextLine();
-            switch (choice) {
-                case 1:
-                    addressBook.addContact(readContact());//call addcontact with passing method readcontact
-                    break;
-                case 2:
-                    System.out.println("Enter First name to edit contact: ");
-                    String name = sc.nextLine();
-                    if (addressBook.searchByName(name) == -1) //call searchbyname method by passing first name value
-                        System.out.println("Data Not Found....!");
-                    else
-                        addressBook.editContact(name, readContact()); //call edit method with name and method parameter
-                    break;
-                case 3:
-                    System.out.println("Enter First name to delete contact: ");
-                    name = sc.nextLine();
-                    if (addressBook.searchByName(name) == -1)
-                        System.out.println("Data Not Found....!");
-                    else
-                        addressBook.deleteContact(name); //call method for delete contact
-                    break;
-                case 4:
-                    System.out.println(addressBook.toString()); //call tostring method for showing details
-                    break;
-                case 5:
-                    return;
-                default:
-                    System.out.println("Invalid Choice!");
-                    break;
+    // FUNCTION TO CHECK IF RECORD ALREADY EXISTS OR NOT
+    boolean checkExist(String fname, String lname, LinkedList<Person> addressBook){
+        boolean result = false;
+        for(Person person : addressBook){
+            if(fname.equals(person.getFName()) && lname.equals(person.getLName())){
+                result = true;
             }
         }
+        return result;
+    }
+
+    // FUNCTION TO EDIT PERSON RECORD
+    LinkedList<Person> editPerson(LinkedList<Person> addressBook){
+        System.out.print("Enter First Name to edit record: ");
+        String fname = input.next();
+        System.out.print("Enter Last Name: ");
+        String lname = input.next();
+        int flag2 = 0;
+        for(Person p : addressBook){
+            System.out.print(p.getFName()+" "+p.getLName());
+            if(fname.equals(p.getFName()) && lname.equals(p.getLName())){
+                System.out.println("\nEnter edit choice" +
+                        "\n1. Address" +
+                        "\n2. City" +
+                        "\n3. State" +
+                        "\n4. Zip" +
+                        "\n5. Phone Number");
+                int choice = input.nextInt();
+                switch (choice){
+                    case 1:
+                        System.out.print("Enter Updated Address: ");
+                        String address = input.next();
+                        p.setAddress(address);
+                        break;
+                    case 2:
+                        System.out.print("Enter Updated City: ");
+                        String city = input.next();
+                        p.setCity(city);
+                        break;
+                    case 3:
+                        System.out.print("Enter Updated State: ");
+                        String state = input.next();
+                        p.setState(state);
+                        break;
+                    case 4:
+                        System.out.print("Enter Updated Zip: ");
+                        int zip = input.nextInt();
+                        p.setZip(zip);
+                        break;
+                    case 5:
+                        System.out.print("Enter Updated Phone Number: ");
+                        String phoneNum = input.next();
+                        p.setPhoneNum(phoneNum);
+                        break;
+                    default:
+                        System.out.println("Wrong Choice !!!");
+                }
+                flag2 = 1;
+                System.out.println("Updatation Successful !!!");
+            }
+            if (flag2 == 0){
+                System.out.println("Record dose not exist !!!");
+            }
+        }
+        return addressBook;
+    }
+
+    //FUNCTION TO DELETE RECORD FROM THE ADDRESS BOOK
+    LinkedList<Person> deletePerson(LinkedList<Person> addressBook){
+        System.out.print("Enter First Name to delete record: ");
+        String fname = input.next();
+        System.out.print("Enter Last Name: ");
+        String lname = input.next();
+        int flag=0;
+        for(Person person : addressBook){
+            if(fname.equals(person.getFName()) && lname.equals(person.getLName())){
+                addressBook.remove(person);
+                System.out.println("Deletion Successful !!!");
+                flag=1;
+                break;
+            }
+        }
+        if (flag==0){
+            System.out.println("No Record exists !!!");
+        }
+        return addressBook;
     }
 }
