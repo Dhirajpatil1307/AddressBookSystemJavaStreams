@@ -1,78 +1,46 @@
-package com.bridgelabz.addressbooksystem;
-
-import java.util.LinkedList;
+package addressbooksystem;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class AddressBookMain {
-	public static void main(String[] args) {
-		LinkedList<Person> addressBook = new LinkedList<Person>();
-		AddressBook ab = new AddressBook();
-		Scanner input = new Scanner(System.in);
-		System.out.println("Welcome to Address Book !");
-		int flag = 0;
-		while (flag == 0) {
-			System.out.print("\nEnter Choice" + "\n1. Add Person" + "\n2. View Address Book" + "\n3. Edit Record"
-					+ "\n4. Delete Person" + "\n5. Sort By Name" + "\n6. Exit" + "\nChoice: ");
-			int choice = input.nextInt();
-			switch (choice) {
-			case 1:
-				addressBook = ab.addPerson(addressBook);
-				break;
-			case 2:
-				if (addressBook.isEmpty()) {
-					System.out.println("Address Book is Empty !!!");
-				} else {
-					for (Person person : addressBook) {
-						System.out.println(person.toString());
-					}
-				}
-				break;
-			case 3:
-				if (addressBook.isEmpty()) {
-					System.out.println("Address Book Empty !!!");
-				} else {
-					addressBook = ab.editPerson(addressBook);
-				}
-				break;
-			case 4:
-				if (addressBook.isEmpty()) {
-					System.out.println("Address Book Empty !!!");
-				} else {
-					addressBook = ab.deletePerson(addressBook);
-				}
-				break;
-			case 5:
-				if (addressBook.isEmpty()) {
-					System.out.println("Address Book is Empty !!!");
-				} else {
-					System.out.print("\n\t1. Name" + "\n\t2. City" + "\n\t3. State" + "\n\t4. Zip" + "\n\tChoice: ");
-					int choiceForSort = input.nextInt();
-					switch (choiceForSort) {
-					case 1:
-						ab.sortByName(addressBook);
-						break;
-					case 2:
-						ab.sortByCity(addressBook);
-						break;
-					case 3:
-						ab.sortByState(addressBook);
-						break;
-					case 4:
-						ab.sortByZip(addressBook);
-						break;
-					default:
-						System.out.println("Invalid choice !!!");
-						break;
-					}
-				}
-				break;
-			case 6:
-				flag = 1;
-				break;
-			default:
-				System.out.println("Invalid Choice !!!");
-				break;
-			}
-		}
-	}
+    public static void main(String[] args) {
+        List<String> person = new ArrayList<String>();
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Welcome to Address Book !");
+
+        System.out.print("Enter First name: ");
+        String fname = input.nextLine();
+
+        System.out.print("Enter Last name: ");
+        String lname = input.nextLine();
+
+        System.out.print("Enter Address: ");
+        String address = input.nextLine();
+
+        System.out.print("Enter City: ");
+        String city = input.nextLine();
+
+        System.out.print("Enter state: ");
+        String state = input.nextLine();
+
+        System.out.print("Enter Zip: ");
+        String zip = input.nextLine();
+
+        System.out.print("Enter phone number: ");
+        String phone = input.nextLine();
+
+        person.add(fname);
+        person.add(lname);
+        person.add(address);
+        person.add(city);
+        person.add(state);
+        person.add(zip);
+        person.add(phone);
+
+        for (String str : person){
+            System.out.println(str);
+        }
+    }
 }
